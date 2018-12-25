@@ -26,3 +26,17 @@ func Register(c *gin.Context) {
 		c.String(http.StatusOK, "ok:", account)
 	}
 }
+
+// Login to api
+func Login(c *gin.Context) {
+	var account accountservice.Account
+	err := c.Bind(&account)
+	if nil != err {
+		c.String(http.StatusBadRequest, "param error")
+	}
+	if account.Auth() {
+		c.String(http.StatusOK, "ok")
+	} else {
+		c.String(http.StatusOK, "no")
+	}
+}

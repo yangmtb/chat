@@ -11,28 +11,22 @@ import (
 	"chat/pkg/setting"
 )
 
-func main() {
+func test() {
 	psd := `pwd`
-	fmt.Println("psd:", psd)
-	s1 := util.Sha256(psd)
-	fmt.Println("sha256:", s1)
 	sa := util.GenerateSalt(32)
 	fmt.Println("salt:", sa)
-	fmt.Println(util.Sha256(s1 + sa))
-	fmt.Println("len:", len(s1))
+	fmt.Println("password:", util.GeneratePassword(psd, sa))
 	fmt.Println(util.HashAndSalt([]byte("xxxxxx")))
-
 	return
+}
+
+func main() {
 	setting.Setup()
 	model.Setup()
-	fmt.Println("app", setting.AppSetting)
-	fmt.Println("server", setting.ServerSetting)
-	fmt.Println("database", setting.DatabaseSetting)
-	fmt.Println("redis", setting.RedisSetting)
-	router := routers.InitRouter()
+
 	server := &http.Server{
 		Addr:           fmt.Sprintf(":%d", setting.ServerSetting.HTTPPort),
-		Handler:        router,
+		Handler:        routers.InitRouter(),
 		ReadTimeout:    setting.ServerSetting.ReadTimeout,
 		WriteTimeout:   setting.ServerSetting.WriteTimeout,
 		MaxHeaderBytes: 1 << 20,
