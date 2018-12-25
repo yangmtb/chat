@@ -27,11 +27,10 @@ func GenerateSalt(length int) string {
 	return string(b)
 }
 
-// GeneratePassword is genrate password
-func GeneratePassword(password, salt string) string {
-	m := sha256.New()
-	m.Write([]byte(password + salt))
-	return hex.EncodeToString(m.Sum(nil))
+// GeneratePassword is generate password
+func GeneratePassword(src, salt string) string {
+	sa := Sha256String(src)
+	return Sha256String(sa + salt)
 }
 
 // HashAndSalt is
@@ -43,8 +42,8 @@ func HashAndSalt(pwd []byte) string {
 	return string(hash)
 }
 
-// Sha256 is sha256 string
-func Sha256(str string) string {
+// Sha256String is sha256 string
+func Sha256String(str string) string {
 	m := sha256.New()
 	m.Write([]byte(str))
 	return hex.EncodeToString(m.Sum(nil))
