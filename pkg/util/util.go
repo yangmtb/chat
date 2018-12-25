@@ -27,6 +27,13 @@ func GenerateSalt(length int) string {
 	return string(b)
 }
 
+// GeneratePassword is genrate password
+func GeneratePassword(password, salt string) string {
+	m := sha256.New()
+	m.Write([]byte(password + salt))
+	return hex.EncodeToString(m.Sum(nil))
+}
+
 // HashAndSalt is
 func HashAndSalt(pwd []byte) string {
 	hash, err := bcrypt.GenerateFromPassword(pwd, bcrypt.DefaultCost)
