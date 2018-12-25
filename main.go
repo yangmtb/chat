@@ -2,6 +2,7 @@ package main
 
 import (
 	"chat/model"
+	"chat/pkg/logging"
 	"chat/pkg/util"
 	"chat/routers"
 	"fmt"
@@ -23,6 +24,7 @@ func test() {
 func main() {
 	setting.Setup()
 	model.Setup()
+	logging.Setup()
 
 	server := &http.Server{
 		Addr:           fmt.Sprintf(":%d", setting.ServerSetting.HTTPPort),

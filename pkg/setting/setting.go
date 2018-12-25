@@ -13,7 +13,10 @@ type app struct {
 
 	RuntimeRootPath string
 
-	TimeFormat string
+	LogSavePath string
+	LogSaveName string
+	LogFileExt  string
+	TimeFormat  string
 }
 
 type server struct {

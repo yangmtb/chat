@@ -12,6 +12,7 @@ type Account struct {
 	Nickname string `form:"nickname"`
 	Email    string `form:"email"`
 	Phone    string `form:"phone"`
+	Token    string
 	haveInfo bool
 	account  model.Account
 }

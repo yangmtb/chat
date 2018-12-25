@@ -1,6 +1,9 @@
 package api
 
 import (
+	"chat/pkg/app"
+	"chat/pkg/e"
+	"chat/pkg/util"
 	"fmt"
 	"log"
 	"net/http"
@@ -29,14 +32,21 @@ func Register(c *gin.Context) {
 
 // Login to api
 func Login(c *gin.Context) {
+	appG := app.Gin{C: c}
 	var account accountservice.Account
-	err := c.Bind(&account)
-	if nil != err {
-		c.String(http.StatusBadRequest, "param error")
+	httpCode, errCode := app.BindAndValid(c, &account)
+	if e.SUCCESS != errCode {
+		appG.Response(httpCode, errCode, nil)
+		return
 	}
 	if account.Auth() {
-		c.String(http.StatusOK, "ok")
+		type t struct {
+			Token string
+		}
+		var tt t
+		tt.Token, _ = util.GenerateToken(account.Username, account.Password)
+		appG.Response(httpCode, errCode, tt)
 	} else {
-		c.String(http.StatusOK, "no")
+		appG.Response(httpCode, errCode, nil)
 	}
 }

@@ -1,6 +1,7 @@
 package routers
 
 import (
+	"chat/middleware/jwt"
 	"chat/pkg/setting"
 	"chat/routers/api"
 	"chat/routers/api/v1"
@@ -19,6 +20,7 @@ func InitRouter() (r *gin.Engine) {
 	r.POST("/login", api.Login)
 
 	apiv1 := r.Group("/api/v1")
+	apiv1.Use(jwt.JWT())
 	{
 		apiv1.GET("/ping", v1.Ping)
 	}

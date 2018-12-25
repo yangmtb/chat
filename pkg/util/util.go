@@ -29,8 +29,7 @@ func GenerateSalt(length int) string {
 
 // GeneratePassword is generate password
 func GeneratePassword(src, salt string) string {
-	sa := Sha256String(src)
-	return Sha256String(sa + salt)
+	return Sha256String(Sha256String(src) + salt)
 }
 
 // HashAndSalt is
