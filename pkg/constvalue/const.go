@@ -51,7 +51,7 @@ const (
 	DotCount = 20
 )
 const (
-	digitFontWidth     = 11
-	digitFontHeight    = 18
-	digitFontBlackChar = 1
+	DigitFontWidth     = 11
+	DigitFontHeight    = 18
+	DigitFontBlackChar = 1
 )

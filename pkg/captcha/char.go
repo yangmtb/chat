@@ -73,7 +73,7 @@ func (captcha *ImageChar) drawHollowLine() *ImageChar {
 		if multiple < 0 {
 			y = y + float64(captcha.ImageHeight/2)
 		}
-		captcha.nrgba.Set(int(x1), int(y).lineColor)
+		captcha.nrgba.Set(int(x1), int(y), lineColor)
 		for i := 0; i <= w; i++ {
 			captcha.nrgba.Set(int(x1), int(y)+i, lineColor)
 		}

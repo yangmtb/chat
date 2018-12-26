@@ -1,6 +1,7 @@
 package captcha
 
 import (
+	"chat/pkg/constvalue"
 	"chat/pkg/random"
 	"chat/pkg/store"
 	"encoding/base64"
@@ -41,20 +42,20 @@ type Interface interface {
 
 // WriteToBase64Encoding converts captcha to base64 encoding string.
 // mimeType is one of "audio/waw" "image/png"
-func WriteToBase64Encoding(cap CaptchaInterface) string {
+func WriteToBase64Encoding(cap Interface) string {
 	binaryData := cap.BinaryEncodeing()
 	var mimeType string
 	if _, ok := cap.(*Audio); ok {
-		mimeType = MimeTypeCaptchaAudio
+		mimeType = constvalue.MimeTypeCaptchaAudio
 	} else {
-		mimeType = MimeTypeCaptchaImage
+		mimeType = constvalue.MimeTypeCaptchaImage
 	}
 	return fmt.Sprintf("data:%s;base64,%s", mimeType, base64.StdEncoding.EncodeToString(binaryData))
 }
 
 // WriteToFile output captcha to file.
 // fileExt is one of 'png', 'wav'
-func WriteToFile(cap CaptchaInterface, outputDir, fileName, fileExt string) (err error) {
+func WriteToFile(cap Interface, outputDir, fileName, fileExt string) (err error) {
 	filePath := filepath.Join(outputDir, fileName+"."+fileExt)
 	fi, err := os.Create(filePath)
 	if nil != err {
@@ -77,6 +78,12 @@ type Item struct {
 // return boolean value.
 func VerifyCaptcha(id, value string) bool {
 	return VerifyCaptchaAndIsClear(id, value, true)
+}
+
+// GetVerify ...
+func GetVerify(id string) (value string) {
+	value = globalStore.Get(id, false)
+	return
 }
 
 // VerifyCaptchaAndIsClear verify captcha, return boolean value.
@@ -112,7 +119,7 @@ func GenerateCaptcha(key string, configuration interface{}) (id string, instance
 		verify = char.VerifyValue
 		instance = char
 	case ConfigDigit:
-		digit := CreateDigtsEngine(key, config)
+		digit := CreateDigitsEngine(key, config)
 		verify = digit.VerifyValue
 		instance = digit
 	default:

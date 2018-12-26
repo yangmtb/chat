@@ -2,12 +2,14 @@ package main
 
 import (
 	"chat/model"
+	"chat/pkg/captcha"
 	"chat/pkg/logging"
 	"chat/pkg/util"
 	"chat/routers"
 	"fmt"
 	"log"
 	"net/http"
+	"os"
 
 	"chat/pkg/setting"
 )
@@ -22,6 +24,22 @@ func test() {
 }
 
 func main() {
+	var conf captcha.ConfigCharacter
+	conf.Height = 60
+	conf.Width = 240
+	conf.CaptchaLen = 7
+	conf.IsUseSimpleFont = true
+	conf.Mode = 2
+	id, ins := captcha.GenerateCaptcha("", conf)
+	f, err := os.OpenFile("xx.png", os.O_RDWR|os.O_CREATE, 0755)
+	if nil != err {
+		fmt.Println(err)
+		return
+	}
+	n, err := ins.WriteTo(f)
+	fmt.Println(id, n, err)
+	fmt.Println(captcha.GetVerify(id))
+	return
 	setting.Setup()
 	model.Setup()
 	logging.Setup()
