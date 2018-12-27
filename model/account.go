@@ -36,3 +36,48 @@ func (a *Account) GetInfo() (err error) {
 	}
 	return nil
 }
+
+// ExistPhone is check phone exist?
+func (a *Account) ExistPhone() (ex bool, err error) {
+	err = db.Select("id").Where("phone=?", a.Phone).First(a).Error
+	if nil != err && gorm.ErrRecordNotFound != err {
+		return
+	}
+	err = nil
+	if a.ID > 0 {
+		ex = true
+	} else {
+		ex = false
+	}
+	return
+}
+
+// ExistEmail is check email exist?
+func (a *Account) ExistEmail() (ex bool, err error) {
+	err = db.Select("id").Where("email=?", a.Email).First(a).Error
+	if nil != err && gorm.ErrRecordNotFound != err {
+		return
+	}
+	err = nil
+	if a.ID > 0 {
+		ex = true
+	} else {
+		ex = false
+	}
+	return
+}
+
+// ExistUsername is check username exist?
+func (a *Account) ExistUsername() (ex bool, err error) {
+	err = db.Select("id").Where("username=?", a.Username).First(a).Error
+	if nil != err && gorm.ErrRecordNotFound != err {
+		return
+	}
+	err = nil
+	if a.ID > 0 {
+		ex = true
+	} else {
+		ex = false
+	}
+	return
+}

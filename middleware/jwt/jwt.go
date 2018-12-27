@@ -23,9 +23,9 @@ func JWT() gin.HandlerFunc {
 			if nil != err {
 				switch err.(*jwt.ValidationError).Errors {
 				case jwt.ValidationErrorExpired:
-					code = e.ERROR_AUTH_CHECK_TOKEN_TIMEOUT
+					code = e.ERROR_TOKEN_TIMEOUT_FAIL
 				default:
-					code = e.ERROR_AUTH_CHECK_TOKEN_FAIL
+					code = e.ERROR_TOKEN_CHECK_FAIL
 				}
 			}
 		}

@@ -1,8 +1,8 @@
 package logging
 
 import (
+	"chat/pkg/file"
 	"fmt"
-	"go-gin-example/pkg/file"
 	"log"
 	"os"
 	"path/filepath"

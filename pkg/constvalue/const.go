@@ -20,6 +20,7 @@ const (
 	//FileExtCaptchaImage output file extension.
 	FileExtCaptchaImage = "png"
 )
+
 const (
 	//CaptchaComplexLower complex level lower.
 	CaptchaComplexLower = iota
@@ -28,6 +29,7 @@ const (
 	//CaptchaComplexHigh complex level high.
 	CaptchaComplexHigh
 )
+
 const (
 	//CaptchaModeNumber mode number.
 	CaptchaModeNumber = iota
@@ -50,8 +52,12 @@ const (
 	// 图像验证码干扰圆点的数量.
 	DotCount = 20
 )
+
 const (
-	DigitFontWidth     = 11
-	DigitFontHeight    = 18
+	// DigitFontWidth .
+	DigitFontWidth = 11
+	// DigitFontHeight .
+	DigitFontHeight = 18
+	// DigitFontBlackChar .
 	DigitFontBlackChar = 1
 )

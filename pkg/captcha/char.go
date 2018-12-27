@@ -289,23 +289,23 @@ func CreateCharEngine(config ConfigCharacter) *ImageChar {
 		img.drawTextNoise(config.ComplexOfNoiseText, config.IsUseSimpleFont)
 	}
 	if config.IsShowSlimeLine {
-		img.drawSlimLine(4)
+		img.drawSlimLine(int(random.Random(2, 6)))
 	}
 	if config.IsShowSineLine {
 		img.drawSineLine()
 	}
 	var content string
 	switch config.Mode {
+	case constvalue.CaptchaModeNumber:
+		content = random.RandText(config.CaptchaLen, constvalue.TxtNumbers)
+		img.VerifyValue = content
 	case constvalue.CaptchaModeAlphabet:
 		content = random.RandText(config.CaptchaLen, constvalue.TxtAlphabet)
 		img.VerifyValue = content
 	case constvalue.CaptchaModeArithmetic:
 		content, img.VerifyValue = random.RandArithmetic()
-	case constvalue.CaptchaModeNumber:
-		content = random.RandText(config.CaptchaLen, constvalue.TxtNumbers)
-		img.VerifyValue = content
 	default:
-		content = random.RandText(config.CaptchaLen, constvalue.TxtNumbers)
+		content = random.RandText(config.CaptchaLen, constvalue.TxtSimpleCharaters)
 		img.VerifyValue = content
 	}
 	img.drawText(content, config.IsUseSimpleFont)

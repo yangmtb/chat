@@ -3,6 +3,7 @@ package captcha
 import (
 	"bytes"
 	"chat/pkg/constvalue"
+	"chat/pkg/fonts"
 	"chat/pkg/random"
 	"chat/pkg/rng"
 	"image"
@@ -225,13 +226,30 @@ func (captcha *ImageDigit) WriteTo(w io.Writer) (int64, error) {
 }
 
 // CreateDigitsEngine create digits engine
-func CreateDigitsEngine(id string, config ConfigDigit) (m *ImageDigit) {
+func CreateDigitsEngine(id string, config ConfigDigit) (img *ImageDigit) {
 	digits := random.RandomDigits(config.CaptchaLen)
 	// initialize PRNG
-	m = new(ImageDigit)
-	m.VerifyValue = random.ParseDigitsToString(digits)
-	m.rg.Seed(random.DeriveSeed(random.ImageSeedPurpose, id, digits))
-	m.Paletted = image.NewPaletted(image.Rect(0, 0, config.Width, config.Height), m.getRandomPalette())
-
+	img = new(ImageDigit)
+	img.VerifyValue = random.ParseDigitsToString(digits)
+	img.rg.Seed(random.DeriveSeed(random.ImageSeedPurpose, id, digits))
+	img.Paletted = image.NewPaletted(image.Rect(0, 0, config.Width, config.Height), img.getRandomPalette())
+	img.calculateSizes(config.Width, config.Height, len(digits))
+	maxx := config.Width - (img.ImageWidth+img.dotSize)*len(digits) - img.dotSize
+	maxy := config.Height - img.ImageHeight - img.dotSize*2
+	var border int
+	if config.Width > config.Height {
+		border = config.Height / 5
+	} else {
+		border = config.Width / 5
+	}
+	x := img.rg.Int(border, maxx-border)
+	y := img.rg.Int(border, maxy-border)
+	for _, n := range digits {
+		img.drawDigit(fonts.DigitFontData[n], x, y)
+		x += img.ImageWidth + img.dotSize
+	}
+	img.strikeThrough()
+	img.distort(img.rg.Float(5, 10), img.rg.Float(100, 200))
+	img.fillWithCircles(constvalue.DotCount, img.dotSize)
 	return
 }

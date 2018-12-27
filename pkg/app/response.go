@@ -1,7 +1,7 @@
 package app
 
 import (
-	"go-gin-example/pkg/e"
+	"chat/pkg/e"
 
 	"github.com/gin-gonic/gin"
 )
@@ -14,7 +14,7 @@ type Gin struct {
 // Response response message
 func (g *Gin) Response(httpCode, errCode int, data interface{}) {
 	g.C.JSON(httpCode, gin.H{
-		"code": httpCode,
+		"code": errCode,
 		"msg":  e.GetMsg(errCode),
 		"data": data,
 	})

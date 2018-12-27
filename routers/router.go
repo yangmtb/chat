@@ -6,6 +6,7 @@ import (
 	"chat/routers/api"
 	"chat/routers/api/v1"
 
+	"github.com/gin-gonic/contrib/static"
 	"github.com/gin-gonic/gin"
 )
 
@@ -15,9 +16,16 @@ func InitRouter() (r *gin.Engine) {
 	r.Use(gin.Logger())
 	r.Use(gin.Recovery())
 	gin.SetMode(setting.ServerSetting.RunMode)
+	//r.Use(static.Serve("/", static.LocalFile("/tmp", false)))
+	//r.Use(static.Serve("/", static.LocalFile("./static", false)))
+	r.Use(static.Serve("/", static.LocalFile("./routers/static", false)))
+	//r.StaticFile("/", "./static")
 
-	r.POST("/register", api.Register)
-	r.POST("/login", api.Login)
+	r.POST("/register", api.Signup)
+	r.POST("/login", api.Signin)
+
+	r.GET("/captcha", api.GetCaptcha)
+	r.POST("/verify", api.VerifyCaptcha)
 
 	apiv1 := r.Group("/api/v1")
 	apiv1.Use(jwt.JWT())

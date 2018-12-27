@@ -40,7 +40,8 @@ func RandFontFamily() *truetype.Font {
 	return TrueTypeFontFamilys[index]
 }
 
-var digitFontData = [][]byte{
+// DigitFontData .
+var DigitFontData = [][]byte{
 	{ // 0
 		0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0,
 		0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0,

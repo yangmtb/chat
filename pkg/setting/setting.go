@@ -43,6 +43,16 @@ type redis struct {
 	IdleTimeout time.Duration
 }
 
+type captcha struct {
+	Height        int
+	Width         int
+	Len           int
+	Mode          int
+	UseSimpleFont bool
+	DotNoise      bool
+	SlimeLine     bool
+}
+
 var (
 	// AppSetting is app setting
 	AppSetting = &app{}
@@ -52,6 +62,8 @@ var (
 	DatabaseSetting = &database{}
 	// RedisSetting is redis setting
 	RedisSetting = &redis{}
+	// CaptchaSetting is captcha setting
+	CaptchaSetting = &captcha{}
 
 	cfg *ini.File
 	err error
@@ -70,6 +82,7 @@ func Setup() {
 	mapTo("database", DatabaseSetting)
 	mapTo("redis", RedisSetting)
 	RedisSetting.IdleTimeout = RedisSetting.IdleTimeout * time.Second
+	mapTo("captcha", CaptchaSetting)
 }
 
 func mapTo(section string, v interface{}) {

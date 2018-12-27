@@ -5,7 +5,6 @@ import (
 	"chat/pkg/e"
 	"chat/pkg/util"
 	"fmt"
-	"log"
 	"net/http"
 
 	"chat/service/accountservice"
@@ -13,28 +12,29 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// Register to api
-func Register(c *gin.Context) {
+// Signup to api
+func Signup(c *gin.Context) {
+	appG := app.Gin{C: c}
 	var account accountservice.Account
-	err := c.Bind(&account)
-	if nil != err {
-		c.String(http.StatusBadRequest, "param error")
-		log.Fatal("bind:", err)
+	httpCode, errCode := appG.BindAndValid(&account.Params)
+	if e.SUCCESS != errCode {
+		appG.Response(httpCode, errCode, nil)
+		return
 	}
 	fmt.Println("account:", account)
-	err = account.Register()
+	err := account.Signup()
 	if nil != err {
-		c.String(http.StatusInternalServerError, "internal server error")
+		appG.Response(http.StatusInternalServerError, e.ERROR_ACCOUNT_SIGN_UP_FAIL, nil)
 	} else {
-		c.String(http.StatusOK, "ok:", account)
+		appG.Response(httpCode, e.SUCCESS, nil)
 	}
 }
 
-// Login to api
-func Login(c *gin.Context) {
+// Signin to api
+func Signin(c *gin.Context) {
 	appG := app.Gin{C: c}
 	var account accountservice.Account
-	httpCode, errCode := app.BindAndValid(c, &account)
+	httpCode, errCode := appG.BindAndValid(&account.Params)
 	if e.SUCCESS != errCode {
 		appG.Response(httpCode, errCode, nil)
 		return
@@ -44,9 +44,11 @@ func Login(c *gin.Context) {
 			Token string
 		}
 		var tt t
-		tt.Token, _ = util.GenerateToken(account.Username, account.Password)
-		appG.Response(httpCode, errCode, tt)
+		tt.Token, _ = util.GenerateToken(account.Params.Username, account.Params.Password)
+		//token, _ := c.Cookie("token")
+		c.SetCookie("token", tt.Token, 300, "/", "localhost", false, true)
+		appG.Response(httpCode, e.SUCCESS, tt)
 	} else {
-		appG.Response(httpCode, errCode, nil)
+		appG.Response(httpCode, e.ERROR_ACCOUNT_SIGN_IN_FAIL, nil)
 	}
 }
