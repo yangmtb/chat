@@ -38,12 +38,14 @@ func (a *Account) Signup() error {
 
 // Auth password is ok
 func (a *Account) Auth() bool {
+	fmt.Println("auth:", a.account)
 	if !a.haveInfo {
 		err := a.GetInfo()
 		if nil != err {
 			return false
 		}
 	}
+	fmt.Println(a)
 	if util.GeneratePassword(a.Params.Password, a.account.Salt) == a.account.Password {
 		fmt.Println("auth")
 		return true
@@ -53,11 +55,22 @@ func (a *Account) Auth() bool {
 
 // GetInfo ...
 func (a *Account) GetInfo() (err error) {
+	a.account.Username = a.Params.Username
 	err = a.account.GetInfo()
 	if nil == err {
 		a.haveInfo = true
 	} else {
 		a.haveInfo = false
+	}
+	return
+}
+
+// Exist check phone,email,username
+func (a *Account) Exist(key, value string) (ex bool) {
+	ex, err := a.account.Exist(key, value)
+	if nil != err {
+		fmt.Println("exist", key, " err:", err)
+		ex = false
 	}
 	return
 }

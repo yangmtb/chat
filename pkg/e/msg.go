@@ -9,7 +9,7 @@ var msgFlags = map[int]string{
 	ERROR_CAPTCHA_GET_FAIL:    "请求验证码失败",
 	ERROR_CAPTCHA_VERIFY_FAIL: "验证验证码失败",
 
-	ERROR_ACCOUNT_SIGN_IN_FAIL:   "登录失败",
+	ERROR_ACCOUNT_SIGN_IN_FAIL:   "用户名或密码错误",
 	ERROR_ACCOUNT_SIGN_UP_FAIL:   "注册失败",
 	ERROR_ACCOUNT_USERNAME_EXIST: "用户名已存在",
 	ERROR_ACCOUNT_PHONE_EXIST:    "手机号已存在",

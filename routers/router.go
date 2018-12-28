@@ -4,7 +4,7 @@ import (
 	"chat/middleware/jwt"
 	"chat/pkg/setting"
 	"chat/routers/api"
-	"chat/routers/api/v1"
+	v1 "chat/routers/api/v1"
 
 	"github.com/gin-gonic/contrib/static"
 	"github.com/gin-gonic/gin"
@@ -18,10 +18,11 @@ func InitRouter() (r *gin.Engine) {
 	gin.SetMode(setting.ServerSetting.RunMode)
 	//r.Use(static.Serve("/", static.LocalFile("/tmp", false)))
 	//r.Use(static.Serve("/", static.LocalFile("./static", false)))
-	r.Use(static.Serve("/", static.LocalFile("./routers/static", false)))
+	r.Use(static.Serve("/", static.LocalFile("./routers/static", true)))
 	//r.StaticFile("/", "./static")
 
 	r.POST("/register", api.Signup)
+	r.POST("/exist", api.Exist)
 	r.POST("/login", api.Signin)
 
 	r.GET("/captcha", api.GetCaptcha)
