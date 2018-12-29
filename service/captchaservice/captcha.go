@@ -6,10 +6,9 @@ import (
 	"fmt"
 )
 
-// Captcha struct
-type Captcha struct {
+// CaptchaParam struct
+type CaptchaParam struct {
 	ID    string
-	Data  string
 	Value string
 }
 
@@ -29,14 +28,14 @@ func SetConfig() {
 }
 
 // GetCaptcha get captcha
-func (c *Captcha) GetCaptcha() {
+func GetCaptcha() (id, data string) {
 	id, ins := captcha.GenerateCaptcha("", conf)
 	fmt.Println("id:", id, "value:", captcha.GetVerify(id))
-	c.ID = id
-	c.Data = captcha.WriteToBase64Encoding(ins)
+	data = captcha.WriteToBase64Encoding(ins)
+	return
 }
 
 // VerifyCaptcha verify captcha
-func (c *Captcha) VerifyCaptcha() bool {
-	return captcha.VerifyCaptcha(c.ID, c.Value)
+func VerifyCaptcha(param CaptchaParam) bool {
+	return captcha.VerifyCaptcha(param.ID, param.Value)
 }

@@ -9,24 +9,27 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+var (
+	appG app.Gin
+)
+
 // GetCaptcha api
 func GetCaptcha(c *gin.Context) {
-	appG := app.Gin{C: c}
-	var captcha captchaservice.Captcha
-	captcha.GetCaptcha()
-	appG.Response(http.StatusOK, e.SUCCESS, captcha)
+	appG.C = c
+	id, data := captchaservice.GetCaptcha()
+	appG.Response(http.StatusOK, e.SUCCESS, map[string]string{"id": id, "data": data})
 }
 
 // VerifyCaptcha api
 func VerifyCaptcha(c *gin.Context) {
-	appG := app.Gin{C: c}
-	var captcha captchaservice.Captcha
-	httpCode, errCode := appG.BindAndValid(&captcha)
+	appG.C = c
+	var param captchaservice.CaptchaParam
+	httpCode, errCode := appG.BindAndValid(&param)
 	if e.SUCCESS != errCode {
 		appG.Response(httpCode, errCode, nil)
 		return
 	}
-	if captcha.VerifyCaptcha() {
+	if captchaservice.VerifyCaptcha(param) {
 		appG.Response(http.StatusOK, e.SUCCESS, nil)
 	} else {
 		appG.Response(http.StatusOK, e.ERROR_CAPTCHA_VERIFY_FAIL, nil)
