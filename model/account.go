@@ -1,8 +1,6 @@
 package model
 
 import (
-	"fmt"
-
 	"github.com/jinzhu/gorm"
 )
 
@@ -32,7 +30,6 @@ func (a *Account) Add() (err error) {
 
 // GetInfo is chekc username and password
 func (a *Account) GetInfo() (err error) {
-	fmt.Println("a:", a)
 	err = db.Select("*").Where(*a).First(a).Error
 	if nil != err && gorm.ErrRecordNotFound != err {
 		return err

@@ -1,13 +1,12 @@
 package jwt
 
 import (
-	"chat/pkg/app"
+	. "chat/pkg/app"
 	"chat/pkg/e"
 	"chat/pkg/util"
 	"net/http"
 
 	"github.com/dgrijalva/jwt-go"
-
 	"github.com/gin-gonic/gin"
 )
 
@@ -30,8 +29,7 @@ func JWT() gin.HandlerFunc {
 			}
 		}
 		if e.SUCCESS != code {
-			appG := app.Gin{C: c}
-			appG.Response(http.StatusNonAuthoritativeInfo, code, nil)
+			Response(c, http.StatusNonAuthoritativeInfo, code, nil)
 		}
 		c.Next()
 	}

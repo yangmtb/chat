@@ -8,8 +8,8 @@ import (
 
 // CaptchaParam struct
 type CaptchaParam struct {
-	ID    string
-	Value string
+	ID    string `json:"id"`
+	Value string `json:"value"`
 }
 
 var (

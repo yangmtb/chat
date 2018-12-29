@@ -4,15 +4,15 @@ import (
 	"chat/model"
 	"chat/pkg/captcha"
 	"chat/pkg/logging"
+	"chat/pkg/setting"
 	"chat/pkg/util"
 	"chat/routers"
 	"chat/service/captchaservice"
+
 	"fmt"
 	"log"
 	"net/http"
 	"os"
-
-	"chat/pkg/setting"
 
 	"github.com/gin-gonic/contrib/static"
 	"github.com/gin-gonic/gin"

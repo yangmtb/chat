@@ -8,6 +8,8 @@ import (
 
 // Param account param
 type Param struct {
+	ID       string `form:"id"`
+	Value    string `form:"value"`
 	Username string `form:"username"`
 	Password string `form:"password"`
 	Nickname string `form:"nickname"`
@@ -38,16 +40,13 @@ func (a *Account) Signup() error {
 
 // Auth password is ok
 func (a *Account) Auth() bool {
-	fmt.Println("auth:", a.account)
 	if !a.haveInfo {
 		err := a.GetInfo()
 		if nil != err {
 			return false
 		}
 	}
-	fmt.Println(a)
 	if util.GeneratePassword(a.Params.Password, a.account.Salt) == a.account.Password {
-		fmt.Println("auth")
 		return true
 	}
 	return false

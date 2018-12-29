@@ -14,15 +14,16 @@ var (
 // Claims ...
 type Claims struct {
 	Username string `json:"username"`
-	Password string `json:"password"`
+	//Password string `json:"password"`
 	jwt.StandardClaims
 }
 
 // GenerateToken ...
 func GenerateToken(username, password string) (token string, err error) {
 	claims := Claims{
-		Sha256String(username),
-		password,
+		username,
+		//Sha256String(username),
+		//password,
 		jwt.StandardClaims{
 			ExpiresAt: time.Now().Add(3 * time.Hour).Unix(),
 			Issuer:    "chat",

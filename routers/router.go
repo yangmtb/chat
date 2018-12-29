@@ -1,6 +1,7 @@
 package routers
 
 import (
+	"chat/middleware/captcha"
 	"chat/middleware/jwt"
 	"chat/pkg/setting"
 	"chat/routers/api"
@@ -21,12 +22,17 @@ func InitRouter() (r *gin.Engine) {
 	r.Use(static.Serve("/", static.LocalFile("./routers/static", true)))
 	//r.StaticFile("/", "./static")
 
-	r.POST("/register", api.Signup)
-	r.POST("/exist", api.Exist)
-	r.POST("/login", api.Signin)
-
 	r.GET("/captcha", api.GetCaptcha)
+	r.POST("/exist", api.Exist)
 	r.POST("/verify", api.VerifyCaptcha)
+
+	// 需要验证码的api
+	c := r.Group("/api")
+	c.Use(captcha.Captcha())
+	{
+		c.POST("/register", api.Signup)
+		c.POST("/login", api.Signin)
+	}
 
 	apiv1 := r.Group("/api/v1")
 	apiv1.Use(jwt.JWT())

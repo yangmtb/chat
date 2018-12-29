@@ -6,11 +6,12 @@ import (
 	"chat/pkg/e"
 
 	"github.com/astaxie/beego/validation"
+	"github.com/gin-gonic/gin"
 )
 
 // BindAndValid bind form and valid form data
-func (g *Gin) BindAndValid(form interface{}) (int, int) {
-	err := g.C.Bind(form)
+func BindAndValid(c *gin.Context, form interface{}) (int, int) {
+	err := c.Bind(form)
 	if nil != err {
 		return http.StatusBadRequest, e.INVALID_PARAMS
 	}
